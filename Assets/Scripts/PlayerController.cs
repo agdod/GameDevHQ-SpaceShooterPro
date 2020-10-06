@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	//  Player Movment  Variables
 	[SerializeField] private float _speed = 1.0f;
 	[SerializeField] private float _yLowerBound = -2.0f;
 	[SerializeField] private float _yUpperBound = 0.0f;
+	// Firing
+	[SerializeField] private GameObject _laserPrefab;
+
 
 	void Start()
 	{
@@ -18,6 +22,12 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		PlayerMovement();
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			// Fire Laser
+			Debug.Log("Space Pressed fire laser");
+			Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+		}
 	}
 
 	void PlayerMovement()

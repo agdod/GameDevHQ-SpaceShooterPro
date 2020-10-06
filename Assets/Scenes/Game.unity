@@ -407,3 +407,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2.5
+  _yLowerBound: -2
+  _yUpperBound: 1.5
+  _laserPrefab: {fileID: 6686638618125930031, guid: 315e0ffc93327fb49867f7071c1e2a5f, type: 3}
