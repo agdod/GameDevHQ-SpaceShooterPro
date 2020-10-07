@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
 	[SerializeField] private float _upperBound = 8.0f;
 	[SerializeField] private float _lowerBound = -3.5f;
-	[SerializeField] private float _enemySpeed = 8.0f;
+	[SerializeField] private float _enemySpeed = 4.0f;
 
 	void Start()
 	{
@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
 
 	void RespawnEnemy()
 	{
-		float xPos = Random.Range(-10, 10);
+		float xPos = Random.Range(-10f, 10f);
 		transform.position = new Vector3(xPos, _upperBound, 0);
 	}
 
