@@ -46,13 +46,18 @@ public class Enemy : MonoBehaviour
 		 *		destroy enemy
 		 */
 
-		Debug.Log("hit : " + other.transform.name);
-		if (other.transform.tag=="Player")
+		Debug.Log("hit : " + other.tag);
+		if (other.tag=="Player")
 		{
 			// Damage Player
+			PlayerController player = other.GetComponent<PlayerController>();
+			if (player != null)
+			{
+				player.Damage();
+			}
 			Destroy(gameObject);
 		} 
-		else if (other.transform.tag == "Laser")
+		else if (other.tag == "Laser")
 		{
 			Destroy(other.gameObject);
 			Destroy(gameObject);

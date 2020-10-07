@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _speed = 1.0f;
 	[SerializeField] private float _yLowerBound = -2.0f;
 	[SerializeField] private float _yUpperBound = 0.0f;
+	[SerializeField] private int _lives = 3;
 	// Firing
 	[SerializeField] private GameObject _laserPrefab;
 	[SerializeField] private Vector3 _laserOffset;
@@ -61,5 +62,15 @@ public class PlayerController : MonoBehaviour
 	{
 		_canFire = Time.time + _fireRate;
 		Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+	}
+
+	public void Damage()
+	{
+		_lives--;
+		if (_lives < 1)
+		{
+			Debug.Log("Player Dead. Game Over");
+			Destroy(gameObject);
+		}
 	}
 }
