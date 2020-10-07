@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _yUpperBound = 0.0f;
 	// Firing
 	[SerializeField] private GameObject _laserPrefab;
+	[SerializeField] private Vector3 _laserOffset;
+	[SerializeField] private float _fireRate;
+	private float _canFire = -1f;
 
 
 	void Start()
@@ -22,11 +25,10 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		PlayerMovement();
-		if (Input.GetKeyDown(KeyCode.Space))
+		// Fire laser at speed _fireRate
+		if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
 		{
-			// Fire Laser
-			Debug.Log("Space Pressed fire laser");
-			Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+			FireLaser();
 		}
 	}
 
@@ -53,5 +55,13 @@ public class PlayerController : MonoBehaviour
 		{
 			transform.position = new Vector3(11, transform.position.y, 0);
 		}
+	}
+
+	void FireLaser()
+	{
+		
+		Debug.Log("Space Pressed fire laser");
+		_canFire = Time.time + _fireRate;
+		Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
 	}
 }

@@ -410,3 +410,5 @@ MonoBehaviour:
   _yLowerBound: -2
   _yUpperBound: 1.5
   _laserPrefab: {fileID: 6686638618125930031, guid: 315e0ffc93327fb49867f7071c1e2a5f, type: 3}
+  _laserOffset: {x: 0, y: 0.8, z: 0}
+  _fireRate: 0.2
