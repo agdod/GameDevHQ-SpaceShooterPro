@@ -59,8 +59,6 @@ public class PlayerController : MonoBehaviour
 
 	void FireLaser()
 	{
-		
-		Debug.Log("Space Pressed fire laser");
 		_canFire = Time.time + _fireRate;
 		Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
 	}

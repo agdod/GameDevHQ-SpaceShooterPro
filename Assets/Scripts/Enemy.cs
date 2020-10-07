@@ -35,4 +35,27 @@ public class Enemy : MonoBehaviour
 			RespawnEnemy();
 		}
 	}
+	private void OnTriggerEnter(Collider other)
+	{
+		/*	if other is player
+		 *		damage player
+		 *		destroy enemy
+		 *		
+		 *	if other is laser
+		 *		destroy laser
+		 *		destroy enemy
+		 */
+
+		Debug.Log("hit : " + other.transform.name);
+		if (other.transform.name=="Player")
+		{
+			// Damage Player
+			Destroy(gameObject);
+		} 
+		else if (other.transform.name == "Laser(Clone)")
+		{
+			Destroy(other.gameObject);
+			Destroy(gameObject);
+		}
+	}
 }
