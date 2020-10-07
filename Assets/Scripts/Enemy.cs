@@ -47,12 +47,12 @@ public class Enemy : MonoBehaviour
 		 */
 
 		Debug.Log("hit : " + other.transform.name);
-		if (other.transform.name=="Player")
+		if (other.transform.tag=="Player")
 		{
 			// Damage Player
 			Destroy(gameObject);
 		} 
-		else if (other.transform.name == "Laser(Clone)")
+		else if (other.transform.tag == "Laser")
 		{
 			Destroy(other.gameObject);
 			Destroy(gameObject);
