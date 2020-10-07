@@ -37,15 +37,7 @@ public class Enemy : MonoBehaviour
 	}
 	private void OnTriggerEnter(Collider other)
 	{
-		/*	if other is player
-		 *		damage player
-		 *		destroy enemy
-		 *		
-		 *	if other is laser
-		 *		destroy laser
-		 *		destroy enemy
-		 */
-
+		
 		Debug.Log("hit : " + other.tag);
 		if (other.tag=="Player")
 		{
