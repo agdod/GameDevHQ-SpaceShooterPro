@@ -15,12 +15,18 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Vector3 _laserOffset;
 	[SerializeField] private float _fireRate;
 	private float _canFire = -1f;
+	private SpawnManager _spawnManager;
 
 
 	void Start()
 	{
 		// Set player postion to zero
 		transform.position = Vector3.zero;
+		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+		if (_spawnManager == null)
+		{
+			Debug.LogError("No SpawnManger in Scene. Insert Spawn manager into scene.");
+		}
 	}
 
 	void Update()
@@ -70,6 +76,7 @@ public class PlayerController : MonoBehaviour
 		if (_lives < 1)
 		{
 			Debug.Log("Player Dead. Game Over");
+			_spawnManager.StopSpawning();
 			Destroy(gameObject);
 		}
 	}
