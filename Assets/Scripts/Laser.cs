@@ -15,7 +15,18 @@ public class Laser : MonoBehaviour
 		// Destroy laser when out of bounds
 		if (transform.position.y > _upperBound)
 		{
-			Destroy(gameObject);
+			// Check if has parent (i.e is part of triple shot)
+			if (transform.parent != null)
+			{
+				// Get the parent gameObject
+				Transform parentObject = transform.parent;
+				Destroy(parentObject.gameObject);
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
+
 		}
 	}
 }
