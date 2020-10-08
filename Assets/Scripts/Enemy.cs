@@ -37,9 +37,9 @@ public class Enemy : MonoBehaviour
 	}
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		
+
 		Debug.Log("hit : " + other.tag);
-		if (other.tag=="Player")
+		if (other.tag == "Player")
 		{
 			// Damage Player
 			PlayerController player = other.GetComponent<PlayerController>();
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
 				player.Damage();
 			}
 			Destroy(gameObject);
-		} 
+		}
 		else if (other.tag == "Laser")
 		{
 			Destroy(other.gameObject);

@@ -17,12 +17,14 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _fireRate;
 	private float _canFire = -1f;
 	private SpawnManager _spawnManager;
-	[SerializeField]private bool isTripleShotActive; // Serialized for debugging and testing
+	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
+	[SerializeField] private float _coolDown = 5.0f;
 
 
 	void Start()
 	{
 		// Set player postion to zero
+		_isTripleShotActive = false;
 		transform.position = Vector3.zero;
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 		if (_spawnManager == null)
@@ -69,15 +71,15 @@ public class PlayerController : MonoBehaviour
 	void FireLaser()
 	{
 		_canFire = Time.time + _fireRate;
-		if (isTripleShotActive)
+		if (_isTripleShotActive)
 		{
 			Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
-		} 
+		}
 		else
 		{
 			Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
 		}
-		
+
 	}
 
 	public void Damage()
@@ -89,5 +91,18 @@ public class PlayerController : MonoBehaviour
 			_spawnManager.StopSpawning();
 			Destroy(gameObject);
 		}
+	}
+
+	public void ActivateTripleShot()
+	{
+		_isTripleShotActive = true;
+		StartCoroutine(CoolDown());
+	}
+
+	IEnumerator CoolDown()
+	{
+		yield return new WaitForSeconds(_coolDown);
+		_isTripleShotActive = false;
+
 	}
 }

@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
 	{
 		while (_stopSpawning == false)
 		{
-			GameObject newEnemy = Instantiate(_enemyPrefab, transform.position+_spawnOffset, Quaternion.identity);
+			GameObject newEnemy = Instantiate(_enemyPrefab, transform.position + _spawnOffset, Quaternion.identity);
 			newEnemy.transform.parent = _enemyContainer.transform;
 			yield return new WaitForSeconds(_delay);
 		}

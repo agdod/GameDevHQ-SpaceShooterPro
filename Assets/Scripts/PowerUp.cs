@@ -4,35 +4,41 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    /* Move down at defined speed
+	/* Move down at defined speed
      * When leave screen, destroy
      * OnTriggerCollsion
      *      Only collecable by player
      *      on collected destroy
      */
-    [SerializeField] private float _speed = 3.0f;
-    [SerializeField] private float _lowerBounds = -3.5f;
+	[SerializeField] private float _speed = 3.0f;
+	[SerializeField] private float _lowerBounds = -3.5f;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-        if (transform.position.y < _lowerBounds)
-		{
-            Destroy(gameObject);
-		}
-    }
-
-	private void OnTriggerEnter2D(Collider2D collision)
+	void Start()
 	{
-		if (collision.tag == "Player")
+
+	}
+
+	void Update()
+	{
+		transform.Translate(Vector3.down * _speed * Time.deltaTime);
+		if (transform.position.y < _lowerBounds)
 		{
-            //activate powerup
-            Destroy(gameObject);
+			Destroy(gameObject);
+		}
+	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		Debug.Log("other : " + other);
+		if (other.tag == "Player")
+		{
+			//activate powerup
+			PlayerController player = other.GetComponent<PlayerController>();
+			if (player != null)
+			{
+				player.ActivateTripleShot();
+			}
+			Destroy(gameObject);
 		}
 	}
 }
