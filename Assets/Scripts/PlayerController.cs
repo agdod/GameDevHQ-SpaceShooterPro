@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 	private float _canFire = -1f;
 
 	private SpawnManager _spawnManager;
+	[SerializeField] private GameObject _shieldEffect;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
 	[SerializeField] private bool _isShieldActive;
 	[SerializeField] private float _speedModifier = 1.5f;
@@ -27,9 +28,10 @@ public class PlayerController : MonoBehaviour
 
 	void Start()
 	{
-		// Make sure pwoerup are off
+		// Make sure powerups are off
 		_isTripleShotActive = false;
 		_isShieldActive = false;
+		_shieldEffect.SetActive(false);
 
 		// Set player postion to zero
 		transform.position = Vector3.zero;
@@ -94,6 +96,7 @@ public class PlayerController : MonoBehaviour
 		if (_isShieldActive)
 		{
 			// Disable shield Effect
+			_shieldEffect.SetActive(false);
 			_isShieldActive = false;
 			// no player damage 
 			return;
@@ -123,7 +126,7 @@ public class PlayerController : MonoBehaviour
 	public void ActivateShield()
 	{
 		_isShieldActive = true;
-		// enable shield effect
+		_shieldEffect.SetActive(true);
 		// Maybe enable cooldown... but with longer timeout....
 		// StartCoroutine(CoolDown("Shield"));
 	}
