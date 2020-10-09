@@ -7,9 +7,11 @@ public class Enemy : MonoBehaviour
 	[SerializeField] private float _upperBound = 8.0f;
 	[SerializeField] private float _lowerBound = -3.5f;
 	[SerializeField] private float _enemySpeed = 4.0f;
+	private PlayerController _player;
 
 	void Start()
 	{
+		_player = GameObject.Find("Player").GetComponent<PlayerController>();
 		// inital Random spawn position
 		RespawnEnemy();
 	}
@@ -38,8 +40,6 @@ public class Enemy : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-
-		Debug.Log("hit : " + other.tag);
 		if (other.tag == "Player")
 		{
 			// Damage Player
@@ -52,6 +52,7 @@ public class Enemy : MonoBehaviour
 		}
 		else if (other.tag == "Laser")
 		{
+			_player.AddScore(10);
 			Destroy(other.gameObject);
 			Destroy(gameObject);
 		}

@@ -18,13 +18,17 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _fireRate;
 	private float _canFire = -1f;
 
-	private SpawnManager _spawnManager;
+
 	[SerializeField] private GameObject _shieldEffect;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
 	[SerializeField] private bool _isShieldActive;
 	[SerializeField] private float _speedModifier = 1.5f;
 	[SerializeField] private float _coolDown = 5.0f;
-	private bool _isCoolDown = false;
+
+	[SerializeField] private int _score = 0;
+
+	private SpawnManager _spawnManager;
+	[SerializeField] private UI_Manager _uiManager;
 
 	void Start()
 	{
@@ -35,6 +39,9 @@ public class PlayerController : MonoBehaviour
 
 		// Set player postion to zero
 		transform.position = Vector3.zero;
+
+		// initilise score
+		AddScore(0);
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 		if (_spawnManager == null)
 		{
@@ -110,6 +117,14 @@ public class PlayerController : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
+
+	public void AddScore(int points)
+	{
+		_score += points;
+		_uiManager.UpdateScore(_score);
+	}
+
+	/* **** Power Ups **** */
 
 	public void ActivateSpeedBoost()
 	{
