@@ -594,10 +594,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyContainer: {fileID: 389393246}
-  _enemyPrefab: {fileID: 8050167408957858346, guid: 7395958628d35ba47808cbd17bd0f95d, type: 3}
+  _enemyPrefab: {fileID: 8050167408957858346, guid: b0d12a81e50b0ee4c8ad0a6c64000125, type: 3}
   _delay: 5
   _spawnOffset: {x: 0, y: 6, z: 0}
-  _powerupTripleShotPrefab: {fileID: 0}
+  _powerupTripleShotPrefab: {fileID: 6803315312978177324, guid: 751ce4037cc459f42b09bba59dd7a23e, type: 3}
 --- !u!4 &1731644902
 Transform:
   m_ObjectHideFlags: 0

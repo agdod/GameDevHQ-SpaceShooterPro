@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
+	private enum PowerupID
+	{
+		TripleShot,
+		Speed,
+		Shield
+	};
 
+	[SerializeField] private PowerupID powerupId;
 	[SerializeField] private float _speed = 3.0f;
 	[SerializeField] private float _lowerBounds = -3.5f;
-
+	
 	void Update()
 	{
 		transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -27,7 +34,21 @@ public class PowerUp : MonoBehaviour
 			PlayerController player = other.GetComponent<PlayerController>();
 			if (player != null)
 			{
-				player.ActivateTripleShot();
+				switch (powerupId)
+				{
+					case PowerupID.TripleShot:
+						player.ActivateTripleShot();
+						break;
+					case PowerupID.Speed:
+						Debug.Log("Speed selected");
+						//player.ActivateSpeed;
+						break;
+					case PowerupID.Shield:
+						Debug.Log("Sheild selected");
+						// player.ActivateShield
+						break;
+				}
+
 			}
 			Destroy(gameObject);
 		}
