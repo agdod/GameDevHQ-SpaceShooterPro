@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-	private enum PowerupID
+	public enum PowerupID
 	{
 		TripleShot,
 		Speed,
@@ -12,12 +12,12 @@ public class PowerUp : MonoBehaviour
 	};
 
 	[SerializeField] private PowerupID powerupId;
-	[SerializeField] private float _speed = 3.0f;
+	[SerializeField] private float _decentRate = 3.0f;
 	[SerializeField] private float _lowerBounds = -3.5f;
 	
 	void Update()
 	{
-		transform.Translate(Vector3.down * _speed * Time.deltaTime);
+		transform.Translate(Vector3.down * _decentRate * Time.deltaTime);
 		// If PowerUp leaves bottom of screen
 		if (transform.position.y < _lowerBounds)
 		{
@@ -41,7 +41,7 @@ public class PowerUp : MonoBehaviour
 						break;
 					case PowerupID.Speed:
 						Debug.Log("Speed selected");
-						//player.ActivateSpeed;
+						player.ActivateSpeedBoost();
 						break;
 					case PowerupID.Shield:
 						Debug.Log("Sheild selected");

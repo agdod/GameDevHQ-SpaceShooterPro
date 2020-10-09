@@ -20,7 +20,9 @@ public class PlayerController : MonoBehaviour
 
 	private SpawnManager _spawnManager;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
+	[SerializeField] private float _speedModifier = 1.5f;
 	[SerializeField] private float _coolDown = 5.0f;
+	private bool _isCoolDown = false;
 
 	void Start()
 	{
@@ -80,7 +82,6 @@ public class PlayerController : MonoBehaviour
 		{
 			Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
 		}
-
 	}
 
 	public void Damage()
@@ -93,17 +94,34 @@ public class PlayerController : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
+	public void ActivateSpeedBoost()
+	{
+		_speed *= _speedModifier;
+		StartCoroutine(CoolDown("Speed"));
+	}
 
 	public void ActivateTripleShot()
 	{
 		_isTripleShotActive = true;
-		StartCoroutine(CoolDown());
+		StartCoroutine(CoolDown("TripleShot"));
 	}
 
-	IEnumerator CoolDown()
+	IEnumerator CoolDown(string powerUp)
 	{
 		yield return new WaitForSeconds(_coolDown);
-		_isTripleShotActive = false;
+		switch (powerUp)
+		{
+			case "TripleShot":
+				_isTripleShotActive = false;
+				break;
+			case "Speed":
+				_speed /= _speedModifier;
+				break;
+			default:
+				Debug.Log("unidentified PowerUp!");
+				break;
+		}
+		//
 
 	}
 }
