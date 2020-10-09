@@ -10,16 +10,17 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _yLowerBound = -2.0f;
 	[SerializeField] private float _yUpperBound = 0.0f;
 	[SerializeField] private int _lives = 3;
+
 	// Firing
 	[SerializeField] private GameObject _laserPrefab;
 	[SerializeField] private Vector3 _laserOffset;
 	[SerializeField] private GameObject _tripleShotPrefab;
 	[SerializeField] private float _fireRate;
 	private float _canFire = -1f;
+
 	private SpawnManager _spawnManager;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
 	[SerializeField] private float _coolDown = 5.0f;
-
 
 	void Start()
 	{
@@ -54,7 +55,7 @@ public class PlayerController : MonoBehaviour
 		transform.Translate(direction * _speed * Time.deltaTime);
 
 		// Limit player bounds on y and x axis
-		//Clamp on y axis
+		// Clamp on y axis
 		transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, _yLowerBound, _yUpperBound), 0);
 
 		// bound on x axis

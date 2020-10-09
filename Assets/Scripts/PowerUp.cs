@@ -4,23 +4,14 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-	/* Move down at defined speed
-     * When leave screen, destroy
-     * OnTriggerCollsion
-     *      Only collecable by player
-     *      on collected destroy
-     */
+
 	[SerializeField] private float _speed = 3.0f;
 	[SerializeField] private float _lowerBounds = -3.5f;
-
-	void Start()
-	{
-
-	}
 
 	void Update()
 	{
 		transform.Translate(Vector3.down * _speed * Time.deltaTime);
+		// If PowerUp leaves bottom of screen
 		if (transform.position.y < _lowerBounds)
 		{
 			Destroy(gameObject);
@@ -32,7 +23,7 @@ public class PowerUp : MonoBehaviour
 		Debug.Log("other : " + other);
 		if (other.tag == "Player")
 		{
-			//activate powerup
+			// Activate powerup
 			PlayerController player = other.GetComponent<PlayerController>();
 			if (player != null)
 			{

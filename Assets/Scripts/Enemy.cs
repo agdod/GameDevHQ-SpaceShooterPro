@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
 			RespawnEnemy();
 		}
 	}
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 
