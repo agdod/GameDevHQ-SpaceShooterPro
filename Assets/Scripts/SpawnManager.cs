@@ -6,17 +6,23 @@ public class SpawnManager : MonoBehaviour
 {
 	// Spawn Game objects every 5 seconds
 	// create a coroutine of type ienumerator -- yield events
+	//Enemies
 	[SerializeField] private GameObject _enemyContainer;
 	[SerializeField] private GameObject _enemyPrefab;
 	[SerializeField] private float _delay = 5.0f;
 	[SerializeField] private Vector3 _spawnOffset = new Vector3(0, 6, 0);
+	//PowerUps
+	[SerializeField] private GameObject _powerupTripleShotPrefab;
+	//[SerializeField] private float _powerupDelay;
 	private bool _stopSpawning = false;
+
 	private void Start()
 	{
-		StartCoroutine(SpawnRoutine());
+		StartCoroutine(SpawnEnemyRoutine());
+		StartCoroutine(SpawnPowerup());
 	}
 
-	IEnumerator SpawnRoutine()
+	IEnumerator SpawnEnemyRoutine()
 	{
 		while (_stopSpawning == false)
 		{
@@ -26,6 +32,16 @@ public class SpawnManager : MonoBehaviour
 		}
 	}
 
+	IEnumerator SpawnPowerup()
+	{
+		while (_stopSpawning == false)
+		{
+			float _powerupDelay = Random.Range(3f, 7f);
+			Vector3 spawnPos = new Vector3(Random.Range(-9f, 9f), 8, 0);
+			Instantiate(_powerupTripleShotPrefab, spawnPos, Quaternion.identity);
+			yield return new WaitForSeconds(_powerupDelay);
+		}
+	}
 	public void StopSpawning()
 	{
 		_stopSpawning = true;
