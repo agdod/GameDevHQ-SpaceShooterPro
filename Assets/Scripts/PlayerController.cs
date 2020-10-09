@@ -20,14 +20,18 @@ public class PlayerController : MonoBehaviour
 
 	private SpawnManager _spawnManager;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
+	[SerializeField] private bool _isShieldActive;
 	[SerializeField] private float _speedModifier = 1.5f;
 	[SerializeField] private float _coolDown = 5.0f;
 	private bool _isCoolDown = false;
 
 	void Start()
 	{
-		// Set player postion to zero
+		// Make sure pwoerup are off
 		_isTripleShotActive = false;
+		_isShieldActive = false;
+
+		// Set player postion to zero
 		transform.position = Vector3.zero;
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 		if (_spawnManager == null)
@@ -86,6 +90,15 @@ public class PlayerController : MonoBehaviour
 
 	public void Damage()
 	{
+		// If shield is active no player damage, shield is destroyed.
+		if (_isShieldActive)
+		{
+			// Disable shield Effect
+			_isShieldActive = false;
+			// no player damage 
+			return;
+		}
+
 		_lives--;
 		if (_lives < 1)
 		{
@@ -94,6 +107,7 @@ public class PlayerController : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
+
 	public void ActivateSpeedBoost()
 	{
 		_speed *= _speedModifier;
@@ -104,6 +118,14 @@ public class PlayerController : MonoBehaviour
 	{
 		_isTripleShotActive = true;
 		StartCoroutine(CoolDown("TripleShot"));
+	}
+
+	public void ActivateShield()
+	{
+		_isShieldActive = true;
+		// enable shield effect
+		// Maybe enable cooldown... but with longer timeout....
+		// StartCoroutine(CoolDown("Shield"));
 	}
 
 	IEnumerator CoolDown(string powerUp)
@@ -121,7 +143,5 @@ public class PlayerController : MonoBehaviour
 				Debug.Log("unidentified PowerUp!");
 				break;
 		}
-		//
-
 	}
 }

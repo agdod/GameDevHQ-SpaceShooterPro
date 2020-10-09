@@ -45,7 +45,7 @@ public class PowerUp : MonoBehaviour
 						break;
 					case PowerupID.Shield:
 						Debug.Log("Sheild selected");
-						// player.ActivateShield
+						player.ActivateShield();
 						break;
 				}
 
