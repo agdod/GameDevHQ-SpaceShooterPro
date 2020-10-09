@@ -40,8 +40,6 @@ public class PlayerController : MonoBehaviour
 		// Set player postion to zero
 		transform.position = Vector3.zero;
 
-		// initilise score
-		AddScore(0);
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 		if (_spawnManager == null)
 		{
@@ -110,6 +108,8 @@ public class PlayerController : MonoBehaviour
 		}
 
 		_lives--;
+		_uiManager.UpdateLives(_lives);
+
 		if (_lives < 1)
 		{
 			Debug.Log("Player Dead. Game Over");
