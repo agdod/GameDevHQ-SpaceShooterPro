@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UI_Manager : MonoBehaviour
 {
 	[SerializeField] private TMPro.TMP_Text _scoreText;
 	[SerializeField] private Image _livesPlaceHolder;
 	[SerializeField] private TMPro.TMP_Text _gameOver;
+	[SerializeField] private TMPro.TMP_Text _restartText;
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
 	private bool _gameOverStatus = false;
@@ -18,6 +20,16 @@ public class UI_Manager : MonoBehaviour
 		UpdateScore(0);
 		UpdateLives(3);
 		_gameOver.gameObject.SetActive(false);
+		_restartText.gameObject.SetActive(false);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			// Reload scene to restart
+			SceneManager.LoadScene("Game");
+		}
 	}
 
 	public void UpdateScore(int score)
@@ -31,6 +43,7 @@ public class UI_Manager : MonoBehaviour
 		if (currentLives == 0)
 		{
 			_gameOver.gameObject.SetActive(true);
+			_restartText.gameObject.SetActive(true);
 			StartCoroutine(GameOverFlicker());
 		}
 	}
