@@ -8,10 +8,21 @@ public class Enemy : MonoBehaviour
 	[SerializeField] private float _lowerBound = -3.5f;
 	[SerializeField] private float _enemySpeed = 4.0f;
 	private PlayerController _player;
+	private Animator _animator;
 
 	void Start()
 	{
+		// Collect required componets and do null checking
 		_player = GameObject.Find("Player").GetComponent<PlayerController>();
+		if (_player == null)
+		{
+			Debug.LogError("No player found in scene. Insert Player.");
+		}
+		_animator = GetComponent<Animator>();
+		if (_animator == null)
+		{
+			Debug.LogError("No animation found. Ensure animation is attached. ");
+		}
 		// inital Random spawn position
 		RespawnEnemy();
 	}
@@ -48,13 +59,23 @@ public class Enemy : MonoBehaviour
 			{
 				player.Damage();
 			}
-			Destroy(gameObject);
+			DestroyEnemy();
 		}
 		else if (other.tag == "Laser")
 		{
 			_player.AddScore(10);
 			Destroy(other.gameObject);
-			Destroy(gameObject);
+			DestroyEnemy();
 		}
+	}
+	private void DestroyEnemy()
+	{
+		
+		// Send message to animator to activate the trigger "OnEnemyDestroyed"
+		_animator.SetTrigger("OnEnemyDestroyed");
+		// Stop enemy moving  when playing animation
+		_enemySpeed = 0.0f;
+		// Destroy enemy(gameobject) after animation has completed
+		Destroy(gameObject, 2.3f);
 	}
 }

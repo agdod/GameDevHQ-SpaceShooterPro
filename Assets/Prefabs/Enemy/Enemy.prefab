@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8050167408957858358}
-  - component: {fileID: -1954140080503532769}
   - component: {fileID: 7967817707612581655}
   - component: {fileID: 2173853989068539201}
   - component: {fileID: 1334769666520400719}
+  - component: {fileID: 2659688551949365489}
+  - component: {fileID: -1954140080503532769}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -34,21 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1954140080503532769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8050167408957858346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3076b32c6c4184a9e5fafed149c10a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _upperBound: 8
-  _lowerBound: -3.5
-  _enemySpeed: 3
 --- !u!50 &7967817707612581655
 Rigidbody2D:
   serializedVersion: 4
@@ -147,3 +133,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &2659688551949365489
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8050167408957858346}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd70b4f878225b74495250b944ae9497, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1954140080503532769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8050167408957858346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3076b32c6c4184a9e5fafed149c10a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upperBound: 8
+  _lowerBound: -3.5
+  _enemySpeed: 3
