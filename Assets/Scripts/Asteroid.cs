@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    [SerializeField] private float _spinRate = 0.65f;
+    [SerializeField][Range(-20,20)] private float _spinRate = 10.0f;
 	private Vector3 _rotationRate;
 
 	private void Start()
 	{
-		_rotationRate = new Vector3(0, 0, _spinRate);
+		_rotationRate = new Vector3(0, 0, 1);
 	}
 	// Update is called once per frame
 	void Update()
     {
-		transform.Rotate(_rotationRate);
+		transform.Rotate(Vector3.forward * _spinRate * Time.deltaTime);
 	}
 }
