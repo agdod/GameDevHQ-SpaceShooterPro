@@ -11,7 +11,9 @@ public class Asteroid : MonoBehaviour
 
 	private void Start()
 	{
-		transform.position = new Vector3(Random.Range(-10, 10), 6, 0);
+		// make sure astroid is visable at start and set random position
+		gameObject.SetActive(true);
+		transform.position = new Vector3(Random.Range(-8, 8), 6, 0);
 	}
 
 	void Update()
@@ -26,7 +28,7 @@ public class Asteroid : MonoBehaviour
 			if (_explosion != null)
 			{
 				Instantiate(_explosion, transform.position, Quaternion.identity);
-				if (_spawnManager != null )
+				if (_spawnManager != null)
 				{
 					_spawnManager.StartSpawning();
 				}
