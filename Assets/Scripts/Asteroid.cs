@@ -4,16 +4,30 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    [SerializeField][Range(-20,20)] private float _spinRate = 10.0f;
-	private Vector3 _rotationRate;
+	[SerializeField] [Range(-20, 20)] private float _spinRate = 10.0f;
+	[SerializeField] [Range(0f, 3f)] private float _delay;
+	[SerializeField] private GameObject _explosion;
 
 	private void Start()
 	{
-		_rotationRate = new Vector3(0, 0, 1);
+		transform.position = new Vector3(Random.Range(-10, 10), 6, 0);
 	}
-	// Update is called once per frame
+
 	void Update()
-    {
+	{
 		transform.Rotate(Vector3.forward * _spinRate * Time.deltaTime);
+	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.tag == "Laser")
+		{
+			if (_explosion != null)
+			{
+				Instantiate(_explosion, transform.position, Quaternion.identity);
+
+				Destroy(gameObject, _delay);
+			}
+		}
 	}
 }
