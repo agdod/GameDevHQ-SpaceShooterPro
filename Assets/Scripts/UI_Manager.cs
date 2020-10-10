@@ -12,6 +12,10 @@ public class UI_Manager : MonoBehaviour
 	[SerializeField] private TMPro.TMP_Text _restartText;
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
+
+	// Managers
+	[SerializeField] private GameManager _gameManager;
+
 	private bool _gameOverStatus = false;
 
 	private void Start()
@@ -23,13 +27,12 @@ public class UI_Manager : MonoBehaviour
 		_restartText.gameObject.SetActive(false);
 	}
 
-	private void Update()
+	private void GameOver()
 	{
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			// Reload scene to restart
-			SceneManager.LoadScene("Game");
-		}
+		_gameManager.SetGameOver();
+		_gameOver.gameObject.SetActive(true);
+		_restartText.gameObject.SetActive(true);
+		StartCoroutine(GameOverFlicker());
 	}
 
 	public void UpdateScore(int score)
@@ -42,9 +45,7 @@ public class UI_Manager : MonoBehaviour
 		_livesPlaceHolder.sprite = _livesSprite[currentLives];
 		if (currentLives == 0)
 		{
-			_gameOver.gameObject.SetActive(true);
-			_restartText.gameObject.SetActive(true);
-			StartCoroutine(GameOverFlicker());
+			GameOver();
 		}
 	}
 
