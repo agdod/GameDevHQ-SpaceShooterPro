@@ -18,12 +18,15 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _fireRate;
 	private float _canFire = -1f;
 
-
+	//Power Ups
 	[SerializeField] private GameObject _shieldEffect;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
 	[SerializeField] private bool _isShieldActive;
 	[SerializeField] private float _speedModifier = 1.5f;
 	[SerializeField] private float _coolDown = 5.0f;
+
+	//Player Damage
+	[SerializeField] private GameObject[] _playerDamage;
 
 	[SerializeField] private int _score = 0;
 
@@ -39,6 +42,12 @@ public class PlayerController : MonoBehaviour
 
 		// Set player postion to zero
 		transform.position = Vector3.zero;
+
+		// make sure Damage visuals is off
+		foreach(GameObject damage in _playerDamage)
+		{
+			damage.SetActive(false);
+		}
 
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 		if (_spawnManager == null)
@@ -109,12 +118,29 @@ public class PlayerController : MonoBehaviour
 
 		_lives--;
 		_uiManager.UpdateLives(_lives);
-
+		// Check if dead first
 		if (_lives < 1)
 		{
 			Debug.Log("Player Dead. Game Over");
 			_spawnManager.StopSpawning();
 			Destroy(gameObject);
+		}
+
+		// If not dead then display  player damage
+		if (_playerDamage != null)
+		{
+			if (_lives == 2)
+			{
+				// If has 2 lives display left or right at random for damage
+				_playerDamage[Random.Range(0, 2)].SetActive(true);
+			} 
+			else
+			{
+				// Set both to active for damage display
+				_playerDamage[0].SetActive(true);
+				_playerDamage[1].SetActive(true);
+			}
+				
 		}
 	}
 
