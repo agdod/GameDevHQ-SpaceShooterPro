@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+	[SerializeField] [Range(0, 5)] private float _initalDelay = 3.0f;
 	//Enemies
 	[SerializeField] private GameObject _enemyContainer;
 	[SerializeField] private GameObject _enemyPrefab;
@@ -15,15 +16,9 @@ public class SpawnManager : MonoBehaviour
 
 	private bool _stopSpawning = false;
 
-	private void Start()
-	{
-		Debug.Log("PowerUp prefba length : " + _powerupPrefab.Length);
-		StartCoroutine(SpawnEnemyRoutine());
-		StartCoroutine(SpawnPowerup());
-	}
-
 	IEnumerator SpawnEnemyRoutine()
 	{
+		yield return new WaitForSeconds(_initalDelay);
 		while (_stopSpawning == false)
 		{
 			GameObject newEnemy = Instantiate(_enemyPrefab, transform.position + _spawnOffset, Quaternion.identity);
@@ -34,6 +29,7 @@ public class SpawnManager : MonoBehaviour
 
 	IEnumerator SpawnPowerup()
 	{
+		yield return new WaitForSeconds(_initalDelay);
 		while (_stopSpawning == false)
 		{
 			float _powerupDelay = Random.Range(3f, 7f);
@@ -43,6 +39,12 @@ public class SpawnManager : MonoBehaviour
 			Instantiate(_powerupPrefab[index], spawnPos, Quaternion.identity);
 			yield return new WaitForSeconds(_powerupDelay);
 		}
+	}
+
+	public void StartSpawning()
+	{
+		StartCoroutine(SpawnEnemyRoutine());
+		StartCoroutine(SpawnPowerup());
 	}
 
 	public void StopSpawning()

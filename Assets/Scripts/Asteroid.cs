@@ -7,6 +7,7 @@ public class Asteroid : MonoBehaviour
 	[SerializeField] [Range(-20, 20)] private float _spinRate = 10.0f;
 	[SerializeField] [Range(0f, 3f)] private float _delay;
 	[SerializeField] private GameObject _explosion;
+	[SerializeField] private SpawnManager _spawnManager;
 
 	private void Start()
 	{
@@ -25,7 +26,10 @@ public class Asteroid : MonoBehaviour
 			if (_explosion != null)
 			{
 				Instantiate(_explosion, transform.position, Quaternion.identity);
-
+				if (_spawnManager != null )
+				{
+					_spawnManager.StartSpawning();
+				}
 				Destroy(gameObject, _delay);
 			}
 		}
