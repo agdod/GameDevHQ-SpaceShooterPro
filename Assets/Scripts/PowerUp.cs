@@ -70,6 +70,9 @@ public class PowerUp : MonoBehaviour
 	{
 		if (_powerUpSoundFx != null)
 		{
+			// works but ausio is very subtle 
+			// maybe access Ausio manager to play sound
+			// or disbale collider and mesh render and destroy after 1 second..
 			AudioSource.PlayClipAtPoint(_powerUpSoundFx, transform.position);
 		}
 	}
