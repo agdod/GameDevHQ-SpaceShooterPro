@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -7,6 +8,9 @@ public class Enemy : MonoBehaviour
 	[SerializeField] private float _upperBound = 8.0f;
 	[SerializeField] private float _lowerBound = -3.5f;
 	[SerializeField] private float _enemySpeed = 4.0f;
+	[SerializeField] private AudioClip _explosionAudioFx; // explosion audio clip
+	
+	private AudioSource _audioSource;
 	private PlayerController _player;
 	private Animator _animator;
 
@@ -18,10 +22,24 @@ public class Enemy : MonoBehaviour
 		{
 			Debug.LogError("No player found in scene. Insert Player.");
 		}
+
 		_animator = GetComponent<Animator>();
 		if (_animator == null)
 		{
 			Debug.LogError("No animation found. Ensure animation is attached. ");
+		}
+
+		_audioSource = GetComponent<AudioSource>();
+		if (_audioSource == null)
+		{
+			Debug.LogError("No audio souce on component.");
+		}
+		else
+		{
+			if (_explosionAudioFx != null)
+			{
+				_audioSource.clip = _explosionAudioFx;
+			}
 		}
 		// inital Random spawn position
 		RespawnEnemy();
@@ -70,9 +88,15 @@ public class Enemy : MonoBehaviour
 	}
 	private void DestroyEnemy()
 	{
-		
+
 		// Send message to animator to activate the trigger "OnEnemyDestroyed"
 		_animator.SetTrigger("OnEnemyDestroyed");
+		// Play Explosion Sound effect
+		if (_audioSource != null && _explosionAudioFx != null)
+		{
+			_audioSource.Play();
+		}
+
 		// Stop enemy moving  when playing animation
 		_enemySpeed = 0.0f;
 		// Destroy enemy(gameobject) after animation has completed

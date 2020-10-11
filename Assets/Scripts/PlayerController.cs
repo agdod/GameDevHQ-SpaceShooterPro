@@ -26,12 +26,16 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _coolDown = 5.0f;
 
 	//Player Damage
+	[SerializeField] private AudioClip _explosionAudioFX;
 	[SerializeField] private GameObject[] _playerDamage;
 
 	[SerializeField] private int _score = 0;
 
-	private SpawnManager _spawnManager;
 	[SerializeField] private UI_Manager _uiManager;
+
+	private AudioSource _audioSource;
+	private SpawnManager _spawnManager;
+
 
 	void Start()
 	{
@@ -44,7 +48,7 @@ public class PlayerController : MonoBehaviour
 		transform.position = Vector3.zero;
 
 		// make sure Damage visuals is off
-		foreach(GameObject damage in _playerDamage)
+		foreach (GameObject damage in _playerDamage)
 		{
 			damage.SetActive(false);
 		}
@@ -53,6 +57,19 @@ public class PlayerController : MonoBehaviour
 		if (_spawnManager == null)
 		{
 			Debug.LogError("No SpawnManger in Scene. Insert Spawn manager into scene.");
+		}
+
+		_audioSource = GetComponent<AudioSource>();
+		if (_audioSource == null)
+		{
+			Debug.LogError("No AudioSource component found.");
+		}
+		else
+		{
+			if (_explosionAudioFX != null)
+			{
+				_audioSource.clip = _explosionAudioFX;
+			}
 		}
 	}
 
@@ -121,9 +138,7 @@ public class PlayerController : MonoBehaviour
 		// Check if dead first
 		if (_lives < 1)
 		{
-			Debug.Log("Player Dead. Game Over");
-			_spawnManager.StopSpawning();
-			Destroy(gameObject);
+			DestroyPlayer();
 		}
 
 		// If not dead then display  player damage
@@ -133,15 +148,26 @@ public class PlayerController : MonoBehaviour
 			{
 				// If has 2 lives display left or right at random for damage
 				_playerDamage[Random.Range(0, 2)].SetActive(true);
-			} 
+			}
 			else
 			{
 				// Set both to active for damage display
 				_playerDamage[0].SetActive(true);
 				_playerDamage[1].SetActive(true);
 			}
-				
+
 		}
+	}
+
+	void DestroyPlayer()
+	{
+		Debug.Log("Player Dead. Game Over");
+		if (_audioSource != null && _explosionAudioFX != null)
+		{
+			_audioSource.Play();
+		}
+		_spawnManager.StopSpawning();
+		Destroy(gameObject);
 	}
 
 	public void AddScore(int points)
