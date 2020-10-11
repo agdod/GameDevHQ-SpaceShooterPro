@@ -7,6 +7,27 @@ public class Laser : MonoBehaviour
 {
 	[SerializeField] private float _speed = 8.0f;
 	[SerializeField] private float _upperBound = 8.0f;
+	[SerializeField] private AudioClip _laserSFX;
+	private AudioSource _audioSource;
+
+
+	private void Start()
+	{
+		_audioSource = GetComponent<AudioSource>();
+		if (_audioSource == null)
+		{
+			Debug.LogError("No audio Source found attached to componet");
+		}
+		else
+		{
+			if (_laserSFX != null)
+			{
+				_audioSource.clip = _laserSFX;
+			}
+		}
+
+		LaserSoundFx();
+	}
 
 	void Update()
 	{
@@ -28,5 +49,10 @@ public class Laser : MonoBehaviour
 			}
 
 		}
+	}
+
+	public void LaserSoundFx()
+	{
+		_audioSource.Play();
 	}
 }
