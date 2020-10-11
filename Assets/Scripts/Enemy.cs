@@ -99,6 +99,8 @@ public class Enemy : MonoBehaviour
 
 		// Stop enemy moving  when playing animation
 		_enemySpeed = 0.0f;
+		Collider2D collider = GetComponent<Collider2D>();
+		collider.enabled = false;
 		// Destroy enemy(gameobject) after animation has completed
 		Destroy(gameObject, 2.3f);
 	}
