@@ -10,12 +10,12 @@ public class PowerUpSoundFx : MonoBehaviour
 
 	private void Start()
 	{
-		Debug.Log("init _audioSource componet");
-		_audioSourceFx = GetComponent<AudioSource>();
-		if (_audioSourceFx == null)
-		{
-			Debug.LogError("No AudioSource attached to component.");
-		}
+		//Debug.Log("init _audioSource componet");
+		//_audioSourceFx = GetComponent<AudioSource>();
+		//if (_audioSourceFx == null)
+		//{
+		//	Debug.LogError("No AudioSource attached to component.");
+		//}
 	}
 
 	public void PlaySoundFX()
