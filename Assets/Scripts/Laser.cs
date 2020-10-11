@@ -20,7 +20,7 @@ public class Laser : MonoBehaviour
 		}
 		else
 		{
-			if (_laserSFX != null)
+			if (_laserSFX != null && _audioSource.isActiveAndEnabled == true)
 			{
 				_audioSource.clip = _laserSFX;
 			}
