@@ -14,7 +14,19 @@ public class PowerUp : MonoBehaviour
 	[SerializeField] private PowerupID powerupId;
 	[SerializeField] private float _decentRate = 3.0f;
 	[SerializeField] private float _lowerBounds = -3.5f;
-	
+	[SerializeField] private AudioClip _powerUpSoundFx;
+
+	private AudioSource _audioSource;
+
+	private void Start()
+	{
+		_audioSource = GetComponent<AudioSource>();
+		if (_audioSource = null)
+		{
+			Debug.LogError("No AudioSource component found.");
+		}
+	}
+
 	void Update()
 	{
 		transform.Translate(Vector3.down * _decentRate * Time.deltaTime);
@@ -37,20 +49,29 @@ public class PowerUp : MonoBehaviour
 				switch (powerupId)
 				{
 					case PowerupID.TripleShot:
+						PowerUpAudio();
 						player.ActivateTripleShot();
 						break;
 					case PowerupID.Speed:
-						Debug.Log("Speed selected");
+						PowerUpAudio();
 						player.ActivateSpeedBoost();
 						break;
 					case PowerupID.Shield:
-						Debug.Log("Sheild selected");
+						PowerUpAudio();
 						player.ActivateShield();
 						break;
 				}
-
 			}
 			Destroy(gameObject);
 		}
 	}
+
+	void PowerUpAudio()
+	{
+		if (_powerUpSoundFx != null)
+		{
+			AudioSource.PlayClipAtPoint(_powerUpSoundFx, transform.position);
+		}
+	}
+
 }
