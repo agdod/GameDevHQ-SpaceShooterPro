@@ -168,8 +168,11 @@ MonoBehaviour:
   _upperBound: 8
   _lowerBound: -3.5
   _enemySpeed: 3
+  _laserPrefab: {fileID: 2239310033009185787, guid: b34afa0f558224c4eada5cc79efc7ecf, type: 3}
+  _laserOffset: {x: 0, y: 0, z: 0}
+  _fireRateMax: 3
+  _fireRatemin: 7
   _explosionAudioFx: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
-  _audioSource: {fileID: 0}
 --- !u!82 &-4687139746019270363
 AudioSource:
   m_ObjectHideFlags: 0

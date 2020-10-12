@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField] private UI_Manager _uiManager;
 
+	private bool _beenHit = false;  // Set true if hit by enemy laser
 	private AudioSource _audioSource;
 	private SpawnManager _spawnManager;
 
@@ -121,6 +122,28 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	//Receive damage from enemy laser
+	/* two laser hit but require only one set of damge to be called
+	 * first laser hit set flag hasbeenhit
+	 * on second laser if hasbeenhit = true then set hasbeenhit to false
+	 */
+
+	public void DoubleHitCheck()
+	{
+		// First enemy laser to hit
+		if (_beenHit == false)
+		{
+			_beenHit = true;
+			Damage();
+		}
+		// Second enemy laser hits - doesnt call damage routine
+		// Note works for 2 laser enemy only!
+		else
+		{
+			_beenHit = false;
+		}
+	}
+
 	public void Damage()
 	{
 		// If shield is active no player damage, shield is destroyed.
@@ -155,7 +178,6 @@ public class PlayerController : MonoBehaviour
 				_playerDamage[0].SetActive(true);
 				_playerDamage[1].SetActive(true);
 			}
-
 		}
 	}
 
