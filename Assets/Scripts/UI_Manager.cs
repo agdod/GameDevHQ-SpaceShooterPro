@@ -46,16 +46,6 @@ public class UI_Manager : MonoBehaviour
 		StartCoroutine(Ammoflicker());
 	}
 
-	IEnumerator Ammoflicker()
-	{
-		while (_ammoCount.text == "0")
-		{
-			_outOfAmmoStatus = !_outOfAmmoStatus;
-			_ammoCount.gameObject.SetActive(_outOfAmmoStatus);
-			yield return new WaitForSeconds(_flickerDelay);
-		}
-	}
-
 	public void UpdateScore(int score)
 	{
 		_scoreText.text = "Score : " + score;
@@ -67,6 +57,16 @@ public class UI_Manager : MonoBehaviour
 		if (currentLives == 0)
 		{
 			GameOver();
+		}
+	}
+
+	IEnumerator Ammoflicker()
+	{
+		while (_ammoCount.text == "0")
+		{
+			_outOfAmmoStatus = !_outOfAmmoStatus;
+			_ammoCount.gameObject.SetActive(_outOfAmmoStatus);
+			yield return new WaitForSeconds(_flickerDelay);
 		}
 	}
 

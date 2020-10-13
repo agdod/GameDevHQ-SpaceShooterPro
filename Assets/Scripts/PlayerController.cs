@@ -272,6 +272,31 @@ public class PlayerController : MonoBehaviour
 	}
 
 	/* **** Power Ups **** */
+	public void ActivateHealth()
+	{
+		// Update visuals for play damage if any first
+		if (_playerDamage != null)
+		{
+			// One live left - has both thuster damage, disbale one thruster damage.
+			if (_lives == 1)
+			{
+				_playerDamage[0].SetActive(false);
+			}
+			else if (_lives == 2)
+			{
+				// Either left or right can show damage so both need disabling
+				_playerDamage[1].SetActive(false);
+				_playerDamage[0].SetActive(false);
+			}
+		}
+		_lives++;
+		// Restrict lives to max of 3
+		if (_lives > 3)
+		{
+			_lives = 3;
+		}
+		_uiManager.UpdateLives(_lives);
+	}
 
 	public void ActivateAmmoRefill()
 	{
