@@ -491,7 +491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7910761958154135540, guid: d874e7fc9a9cc2645b597f31a9c9adcf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d874e7fc9a9cc2645b597f31a9c9adcf, type: 3}
@@ -889,6 +889,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Damage_Right
       objectReference: {fileID: 0}
+    - target: {fileID: 4006774745722686469, guid: 49bbd5351f6fae84491fa43be7bcb44c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49bbd5351f6fae84491fa43be7bcb44c, type: 3}
 --- !u!1 &882729420
@@ -1062,6 +1066,7 @@ MonoBehaviour:
   _shieldEffect: {fileID: 2058908799}
   _isTripleShotActive: 0
   _isShieldActive: 0
+  _shieldLives: 3
   _speedModifier: 2
   _coolDown: 5
   _explosionAudioFX: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
@@ -1873,6 +1878,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Damage _Left
       objectReference: {fileID: 0}
+    - target: {fileID: 4006774745722686469, guid: 49bbd5351f6fae84491fa43be7bcb44c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49bbd5351f6fae84491fa43be7bcb44c, type: 3}
 --- !u!1 &1731644900
@@ -1975,7 +1984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2058908800
 Transform:
   m_ObjectHideFlags: 0
@@ -1984,7 +1993,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058908799}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.34, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 986493480}
@@ -2031,7 +2040,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 333b0196b7a764df5a7768ead9b69dbc, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2283,6 +2292,10 @@ PrefabInstance:
     - target: {fileID: 6661821102400274664, guid: 08397c10e66383349979a064773aa1e4, type: 3}
       propertyPath: m_Name
       value: Thruster
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661821102400274664, guid: 08397c10e66383349979a064773aa1e4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08397c10e66383349979a064773aa1e4, type: 3}
