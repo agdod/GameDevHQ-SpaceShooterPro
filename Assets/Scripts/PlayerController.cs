@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private GameObject _shieldEffect;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
 	[SerializeField] private bool _isShieldActive;
+	[SerializeField] private int _shieldLives = 3;
 	[SerializeField] private float _speedModifier = 2.0f;
 	[SerializeField] private float _coolDown = 5.0f;
 
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
 	private bool _beenHit = false;  // Set true if hit by enemy laser
 	private AudioSource _audioSource;
 	private SpawnManager _spawnManager;
+	private SpriteRenderer _shieldSpriteRenderer;
 
 
 	void Start()
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
 		{
 			damage.SetActive(false);
 		}
+		_shieldSpriteRenderer = _shieldEffect.GetComponent<SpriteRenderer>();
 
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 		if (_spawnManager == null)
@@ -158,15 +161,43 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	void ShieldDamage()
+	{
+		_shieldLives--;
+		Color shieldColor = _shieldSpriteRenderer.color;
+
+		// Change color of shield according to lives left (using RGB values)
+		switch (_shieldLives)
+		{
+			case 0:
+				// Disable shield Effect
+				_shieldEffect.SetActive(false);
+				_isShieldActive = false;
+				break;
+			case 1:
+				shieldColor = new Color(255, 0, 0);
+				_shieldSpriteRenderer.color = shieldColor;
+				break;
+			case 2:
+				shieldColor = new Color(255, 0, 255);
+				_shieldSpriteRenderer.color = shieldColor;
+				break;
+			default:
+				// if shield lives goes negative.
+				_shieldLives = 0;
+				_shieldEffect.SetActive(false);
+				_isShieldActive = false;
+				break;
+		}
+	}
+
 	public void Damage()
 	{
 		// If shield is active no player damage, shield is destroyed.
 		if (_isShieldActive)
 		{
-			// Disable shield Effect
-			_shieldEffect.SetActive(false);
-			_isShieldActive = false;
-			// no player damage 
+			ShieldDamage();
+			// No player Damage 
 			return;
 		}
 
@@ -230,6 +261,10 @@ public class PlayerController : MonoBehaviour
 	{
 		_isShieldActive = true;
 		_shieldEffect.SetActive(true);
+		// Reset shield lives and full shield color.
+		_shieldLives = 3;
+		Color shieldColor = new Color(255, 255, 255);
+		_shieldSpriteRenderer.color = shieldColor;
 		// Maybe enable cooldown... but with longer timeout....
 		// StartCoroutine(CoolDown("Shield"));
 	}
