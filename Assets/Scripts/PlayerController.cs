@@ -44,13 +44,13 @@ public class PlayerController : MonoBehaviour
 
 	void Start()
 	{
+		// Set player postion to zero
+		transform.position = Vector3.zero;
+
 		// Make sure powerups are off
 		_isTripleShotActive = false;
 		_isShieldActive = false;
 		_shieldEffect.SetActive(false);
-
-		// Set player postion to zero
-		transform.position = Vector3.zero;
 
 		// make sure Damage visuals is off
 		foreach (GameObject damage in _playerDamage)
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
 		}
 		if (Input.GetKeyUp(KeyCode.LeftShift))
 		{
-			_speed = _speed / (_speed * 0.8f);
+			_speed = _speed / (_speedModifier * 0.8f);
 		}
 
 
