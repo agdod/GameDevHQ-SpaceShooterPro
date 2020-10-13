@@ -48,7 +48,7 @@ public class UI_Manager : MonoBehaviour
 
 	IEnumerator Ammoflicker()
 	{
-		while (true)
+		while (_ammoCount.text == "0")
 		{
 			_outOfAmmoStatus = !_outOfAmmoStatus;
 			_ammoCount.gameObject.SetActive(_outOfAmmoStatus);

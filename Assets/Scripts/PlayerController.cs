@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private GameObject _tripleShotPrefab;
 	[SerializeField] private float _fireRate;
 	[SerializeField] private int _ammoCount = 15;
+	[SerializeField] private int _ammoRefill = 15;
 
 	private float _canFire = -1f;
 
@@ -271,6 +272,12 @@ public class PlayerController : MonoBehaviour
 	}
 
 	/* **** Power Ups **** */
+
+	public void ActivateAmmoRefill()
+	{
+		_ammoCount += _ammoRefill;
+		_uiManager.UpdateAmmo(_ammoCount);
+	}
 
 	public void ActivateSpeedBoost()
 	{

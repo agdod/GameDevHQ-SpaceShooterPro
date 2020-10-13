@@ -8,7 +8,8 @@ public class PowerUp : MonoBehaviour
 	{
 		TripleShot,
 		Speed,
-		Shield
+		Shield,
+		Ammo
 	};
 
 	[SerializeField] private PowerupID powerupId;
@@ -59,6 +60,10 @@ public class PowerUp : MonoBehaviour
 					case PowerupID.Shield:
 						PowerUpAudio();
 						player.ActivateShield();
+						break;
+					case PowerupID.Ammo:
+						PowerUpAudio();
+						player.ActivateAmmoRefill();
 						break;
 				}
 			}
