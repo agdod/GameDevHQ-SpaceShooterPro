@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float _yUpperBound = 0.0f;
 	[SerializeField] private int _lives = 3;
 
+
 	// Firing
 	[SerializeField] private GameObject _laserPrefab;
 	[SerializeField] private Vector3 _laserOffset;
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private GameObject _shieldEffect;
 	[SerializeField] private bool _isTripleShotActive; // Serialized for debugging and testing
 	[SerializeField] private bool _isShieldActive;
-	[SerializeField] private float _speedModifier = 1.5f;
+	[SerializeField] private float _speedModifier = 2.0f;
 	[SerializeField] private float _coolDown = 5.0f;
 
 	//Player Damage
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField] private UI_Manager _uiManager;
 
+	private float _oldSpeedModifier;
 	private bool _beenHit = false;  // Set true if hit by enemy laser
 	private AudioSource _audioSource;
 	private SpawnManager _spawnManager;
@@ -82,6 +84,18 @@ public class PlayerController : MonoBehaviour
 		{
 			FireLaser();
 		}
+		// THrusters - move at increased rate wiht "left shift" key
+		// use the already _speedmodifier variable
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			_speed = _speed * (_speedModifier * 0.8f);
+		}
+		if (Input.GetKeyUp(KeyCode.LeftShift))
+		{
+			_speed = _speed / (_speed * 0.8f);
+		}
+
+
 	}
 
 	void PlayerMovement()
