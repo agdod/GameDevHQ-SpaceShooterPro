@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Vector3 _laserOffset;
 	[SerializeField] private GameObject _tripleShotPrefab;
 	[SerializeField] private float _fireRate;
+	[SerializeField] private int _ammoCount = 15;
+
 	private float _canFire = -1f;
 
 	//Power Ups
@@ -57,6 +59,20 @@ public class PlayerController : MonoBehaviour
 		{
 			damage.SetActive(false);
 		}
+
+		// Update /Reset Ammo, Live, Score
+		if (_uiManager != null)
+		{
+			_uiManager.UpdateAmmo(_ammoCount);
+			_uiManager.UpdateLives(_lives);
+			_uiManager.UpdateScore(_score);
+		}
+		else
+		{
+			Debug.LogError("No UI Manager found.");
+		}
+
+		// Get various componets
 		_shieldSpriteRenderer = _shieldEffect.GetComponent<SpriteRenderer>();
 
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
@@ -135,7 +151,18 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
-			Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+			if (_ammoCount > 0)
+			{
+				Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+				_ammoCount--;
+				_uiManager.UpdateAmmo(_ammoCount);
+			}
+			else if (_ammoCount == 0)
+			{
+				_uiManager.OutOfAmmo();
+				// Play out of ammo Sound - a beeep.
+			}
+
 		}
 	}
 

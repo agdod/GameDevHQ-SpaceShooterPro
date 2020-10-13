@@ -7,22 +7,23 @@ using UnityEngine.SceneManagement;
 public class UI_Manager : MonoBehaviour
 {
 	[SerializeField] private TMPro.TMP_Text _scoreText;
+	[SerializeField] private TMPro.TMP_Text _ammoCount;
 	[SerializeField] private Image _livesPlaceHolder;
 	[SerializeField] private TMPro.TMP_Text _gameOver;
 	[SerializeField] private TMPro.TMP_Text _restartText;
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
 
+
 	// Managers
 	[SerializeField] private GameManager _gameManager;
 
+	private bool _outOfAmmoStatus = false;
 	private bool _gameOverStatus = false;
 
 	private void Start()
 	{
 		// Init start values
-		UpdateScore(0);
-		UpdateLives(3);
 		_gameOver.gameObject.SetActive(false);
 		_restartText.gameObject.SetActive(false);
 	}
@@ -33,6 +34,26 @@ public class UI_Manager : MonoBehaviour
 		_gameOver.gameObject.SetActive(true);
 		_restartText.gameObject.SetActive(true);
 		StartCoroutine(GameOverFlicker());
+	}
+
+	public void UpdateAmmo(int score)
+	{
+		_ammoCount.text = score.ToString(); ;
+	}
+
+	public void OutOfAmmo()
+	{
+		StartCoroutine(Ammoflicker());
+	}
+
+	IEnumerator Ammoflicker()
+	{
+		while (true)
+		{
+			_outOfAmmoStatus = !_outOfAmmoStatus;
+			_ammoCount.gameObject.SetActive(_outOfAmmoStatus);
+			yield return new WaitForSeconds(_flickerDelay);
+		}
 	}
 
 	public void UpdateScore(int score)
