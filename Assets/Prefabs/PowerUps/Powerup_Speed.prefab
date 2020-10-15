@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c72b4b1d4186f17438674decf4f7e94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerupId: 0
+  powerupId: 1
   _decentRate: 3
   _lowerBounds: -3.5
   _powerUpSoundFx: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
