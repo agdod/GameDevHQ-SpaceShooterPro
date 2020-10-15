@@ -20,6 +20,11 @@ public class Enemy : MonoBehaviour
 	private PlayerController _player;
 	private Animator _animator;
 
+	public bool EnemyAlive
+	{
+		get { return _enemyAlive; }
+	}
+
 	void Start()
 	{
 		// Collect required componets and do null checking
@@ -48,7 +53,6 @@ public class Enemy : MonoBehaviour
 			}
 		}
 		// inital Random spawn position
-		//CanFire();
 		RespawnEnemy();
 		StartCoroutine(EnemyFireRoutine());
 	}
@@ -56,24 +60,6 @@ public class Enemy : MonoBehaviour
 	void Update()
 	{
 		MoveEnemy();
-	}
-
-	void CanFire()
-	{
-		/* Do random "coin toss" to see if enemy can fire
-		 * Generate random number (1-10)
-		 * Odd can fire , evens cant fire.		
-		 */
-		int choice = Random.Range(1, 11);
-		if (choice % 2 != 0)
-		{
-			_canFire = false;
-		}
-		else
-		{
-			_canFire = true;
-			StartCoroutine(EnemyFireRoutine());
-		}
 	}
 
 	IEnumerator EnemyFireRoutine()

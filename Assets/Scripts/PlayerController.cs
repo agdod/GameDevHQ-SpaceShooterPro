@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	private enum FiringType
+	{
+		Normal,
+		TripleShot,
+		Homing
+	}
+
 	//  Player Movment  Variables
 	[SerializeField] private float _speed = 1.0f;
 	[SerializeField] private float _yLowerBound = -2.0f;
@@ -13,12 +20,14 @@ public class PlayerController : MonoBehaviour
 
 
 	// Firing
+	[SerializeField] private FiringType _firingType;
 	[SerializeField] private GameObject _laserPrefab;
 	[SerializeField] private Vector3 _laserOffset;
 	[SerializeField] private GameObject _tripleShotPrefab;
 	[SerializeField] private float _fireRate;
 	[SerializeField] private int _ammoCount = 15;
 	[SerializeField] private int _ammoRefill = 15;
+	private bool _homingLaser = false;
 
 	private float _canFire = -1f;
 
@@ -54,6 +63,7 @@ public class PlayerController : MonoBehaviour
 		_isTripleShotActive = false;
 		_isShieldActive = false;
 		_shieldEffect.SetActive(false);
+		_firingType = FiringType.Normal;
 
 		// make sure Damage visuals is off
 		foreach (GameObject damage in _playerDamage)
@@ -143,28 +153,79 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	void FireLaser()
+	void FireNormal()
 	{
-		_canFire = Time.time + _fireRate;
-		if (_isTripleShotActive)
+		if (_ammoCount > 0)
 		{
-			Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+			Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+			_ammoCount--;
+			_uiManager.UpdateAmmo(_ammoCount);
+		}
+		else if (_ammoCount == 0)
+		{
+			_uiManager.OutOfAmmo();
+			// Play out of ammo Sound - a beeep.
+		}
+	}
+
+	Transform GetTarget()
+	{
+		// Get first enemy in Spawn manager container as target.
+		GameObject container = _spawnManager.EnemyContainer;
+		Debug.Log("Container has a child cont of :" + container.transform.childCount);
+		if (container.transform.childCount > 0)
+		{
+			Transform enemyTarget = container.transform.GetChild(0);
+			return enemyTarget;
 		}
 		else
 		{
-			if (_ammoCount > 0)
-			{
-				Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
-				_ammoCount--;
-				_uiManager.UpdateAmmo(_ammoCount);
-			}
-			else if (_ammoCount == 0)
-			{
-				_uiManager.OutOfAmmo();
-				// Play out of ammo Sound - a beeep.
-			}
-
+			return null;
 		}
+	}
+
+	void FireHoming()
+	{
+		Debug.Log("homing laser fired");
+		// Collect laser Game'Object fired.
+		GameObject laserFire = Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+		Laser laser = laserFire.GetComponent<Laser>();
+		//Set the target of fired laser
+		if (GetTarget() != null)
+		{
+			laser.HomingLaserFired(GetTarget());
+		}
+		else
+		{
+			FireNormal();
+		}
+
+	}
+
+	void FireLaser()
+	{
+		_canFire = Time.time + _fireRate;
+		switch (_firingType)
+		{
+			case FiringType.Normal:
+				FireNormal();
+				break;
+			case FiringType.TripleShot:
+				Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+				break;
+			case FiringType.Homing:
+				FireHoming();
+				break;
+		}
+		//if (_isTripleShotActive)
+		//{
+		//	
+		//}
+		//else
+		//{
+
+
+		//}
 	}
 
 	//Receive damage from enemy laser
@@ -272,6 +333,13 @@ public class PlayerController : MonoBehaviour
 	}
 
 	/* **** Power Ups **** */
+
+	public void ActivateHomingLaser()
+	{
+		_firingType = FiringType.Homing;
+		StartCoroutine(CoolDown("Homing"));
+	}
+
 	public void ActivateHealth()
 	{
 		// Update visuals for play damage if any first
@@ -313,6 +381,7 @@ public class PlayerController : MonoBehaviour
 	public void ActivateTripleShot()
 	{
 		_isTripleShotActive = true;
+		_firingType = FiringType.TripleShot;
 		StartCoroutine(CoolDown("TripleShot"));
 	}
 
@@ -335,9 +404,13 @@ public class PlayerController : MonoBehaviour
 		{
 			case "TripleShot":
 				_isTripleShotActive = false;
+				_firingType = FiringType.Normal;
 				break;
 			case "Speed":
 				_speed /= _speedModifier;
+				break;
+			case "Homing":
+				_firingType = FiringType.Normal;
 				break;
 			default:
 				Debug.Log("unidentified PowerUp!");

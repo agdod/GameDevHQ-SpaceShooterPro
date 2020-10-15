@@ -10,7 +10,8 @@ public class PowerUp : MonoBehaviour
 		Speed,
 		Shield,
 		Ammo,
-		Health
+		Health,
+		Homing
 	};
 
 	[SerializeField] private PowerupID powerupId;
@@ -69,6 +70,10 @@ public class PowerUp : MonoBehaviour
 					case PowerupID.Health:
 						PowerUpAudio();
 						player.ActivateHealth();
+						break;
+					case PowerupID.Homing:
+						PowerUpAudio();
+						player.ActivateHomingLaser();
 						break;
 				}
 			}
