@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json.Serialization;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,12 @@ public class SpawnManager : MonoBehaviour
 	[SerializeField] private GameObject[] _powerupPrefab;
 
 	private bool _stopSpawning = false;
+
+	// Getters
+	public GameObject EnemyContainer
+	{
+		get { return _enemyContainer; }
+	}
 
 	IEnumerator SpawnEnemyRoutine()
 	{
