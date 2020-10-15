@@ -1,10 +1,60 @@
 ﻿using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+
 
 public class SpawnManager : MonoBehaviour
 {
+	[Serializable]
+	public class PowerUpPrefab
+	{
+		[SerializeField] private GameObject _prefab;
+		public enum Probability
+		{
+			Normal = 0,
+			Rare = 6
+		};
+
+		[SerializeField] private Probability _probability;
+		private int countDown = 6;
+
+		// Getters
+		public GameObject Prefab
+		{
+			get { return _prefab; }
+		}
+
+		public bool Active
+		{
+			// if Power up is classed as rare it becomes active every 1 in X calls
+			get
+			{
+				if (_probability == Probability.Normal)
+				{
+					return true;
+				}
+				else
+				{
+					if (countDown == 0)
+					{
+						countDown = (int)Probability.Rare;
+						return true;
+					}
+					else
+					{
+						countDown--;
+						return false;
+					}
+				}
+			}
+		}
+	}
+
 	[SerializeField] [Range(0, 5)] private float _initalDelay = 3.0f;
 	//Enemies
 	[SerializeField] private GameObject _enemyContainer;
@@ -13,7 +63,9 @@ public class SpawnManager : MonoBehaviour
 	[SerializeField] private Vector3 _spawnOffset = new Vector3(0, 6, 0);
 
 	//PowerUps
-	[SerializeField] private GameObject[] _powerupPrefab;
+	//[SerializeField] private GameObject[] _powerupPrefab;
+
+	[SerializeField] private PowerUpPrefab[] _powerupPrefab;
 
 	private bool _stopSpawning = false;
 
@@ -42,8 +94,19 @@ public class SpawnManager : MonoBehaviour
 			float _powerupDelay = Random.Range(3f, 7f);
 			float posX = Random.Range(-9f, 9f);
 			Vector3 spawnPos = new Vector3(posX, 0, 0) + _spawnOffset;
-			int index = Random.Range(0, _powerupPrefab.Length);
-			Instantiate(_powerupPrefab[index], spawnPos, Quaternion.identity);
+			bool notSpawned = false;
+
+			// Spawn an active Powerup, if selected isnt active random pick again.
+			while (notSpawned == false)
+			{
+				int index = Random.Range(0, _powerupPrefab.Length);
+				if (_powerupPrefab[index].Active == true)
+				{
+					Instantiate(_powerupPrefab[index].Prefab, spawnPos, Quaternion.identity);
+					notSpawned = true;
+				}
+			}
+
 			yield return new WaitForSeconds(_powerupDelay);
 		}
 	}
