@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
 	private bool _homingLaser = false;
 
 	private float _canFire = -1f;
+	private float _thrust = 100f;
 
 	//Power Ups
 	[SerializeField] private GameObject _shieldEffect;
@@ -37,7 +38,10 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private bool _isShieldActive;
 	[SerializeField] private int _shieldLives = 3;
 	[SerializeField] private float _speedModifier = 2.0f;
+	[SerializeField] private float _thursterRate = 2.5f;
+	[SerializeField] private float _thrusterCoolDown = 3f;
 	[SerializeField] private float _coolDown = 5.0f;
+	private bool _canFireThruster = true;
 
 	//Player Damage
 	[SerializeField] private AudioClip _explosionAudioFX;
@@ -47,6 +51,8 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField] private UI_Manager _uiManager;
 
+	private bool _applyingThrusters = true;
+	private bool _hasThrusterPower = true;
 	private float _oldSpeedModifier;
 	private bool _beenHit = false;  // Set true if hit by enemy laser
 	private AudioSource _audioSource;
@@ -116,15 +122,84 @@ public class PlayerController : MonoBehaviour
 		}
 		// THrusters - move at increased rate wiht "left shift" key
 		// use the already _speedmodifier variable
-		if (Input.GetKeyDown(KeyCode.LeftShift))
+		if (Input.GetKeyDown(KeyCode.LeftShift)  && _canFireThruster)
 		{
+			_applyingThrusters = true;
 			_speed = _speed * (_speedModifier * 0.8f);
+			StartCoroutine(ThrusterUpdate());
 		}
 		if (Input.GetKeyUp(KeyCode.LeftShift))
 		{
+			_applyingThrusters = false;
+			StopCoroutine(ThrusterUpdate());
 			_speed = _speed / (_speedModifier * 0.8f);
+			if (_thrust == 0)
+			{
+				StartCoroutine(ThrusterCoolDown());
+			}
 		}
+	}
 
+	// Update thruster and visuals
+	// Thruster are active while left shift is pressed, and thrusters are in cool down mode.
+	// Thruster cooldown is activated once thruster has used all power and thurster key is released.
+	// NOTE : Thruster power can be used in intervals doesnt require to all be used at once.
+	// Thruster is unable to be reactivated until thrusters are fully charged
+
+	IEnumerator ThrusterUpdate()
+	{
+		float uiThrustUpdate;
+		while (_applyingThrusters == true)
+		{
+			if (_hasThrusterPower)
+			{
+				_thrust -= (_thrust * _thursterRate * Time.deltaTime) / _thrust;
+				if (_thrust <= 0.001f)
+				{
+					_thrust = 0;
+					_canFireThruster = false;
+					_hasThrusterPower = false;
+					_applyingThrusters = false;
+				}
+				// Prevent Division by Zero (NaN)
+				if (_thrust != 0)
+				{
+					uiThrustUpdate = _thrust / 100;
+				}
+				else
+				{
+					uiThrustUpdate = 0;
+				}
+				// Normailaze the fill rate and upadte visuals
+				_uiManager.UpdateThruster(uiThrustUpdate);
+			}
+			yield return new WaitForSeconds(0.1f);
+		}
+	}
+
+	// Recharge the thrusters and updates the visuals
+	IEnumerator ThrusterCoolDown()
+
+	{
+		while (_thrust < 100)
+		{
+			if (_thrust == 0)
+			{
+				_thrust = 1;
+			}
+			_thrust += (_thrust * (_thursterRate / _thrusterCoolDown) * Time.deltaTime) / _thrust;
+			Debug.Log("_thrust : " + _thrust);
+			if (_thrust >= 100)
+			{
+				_thrust = 100;
+				_hasThrusterPower = true;
+				_applyingThrusters = true;
+				_canFireThruster = true;
+			}
+			// Normailaze the fill rate and update visuals
+			_uiManager.UpdateThruster(_thrust / 100);
+			yield return new WaitForSeconds(0.1f);
+		}
 
 	}
 

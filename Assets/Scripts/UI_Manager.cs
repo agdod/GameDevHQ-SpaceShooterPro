@@ -13,6 +13,7 @@ public class UI_Manager : MonoBehaviour
 	[SerializeField] private TMPro.TMP_Text _restartText;
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
+	[SerializeField] private Image _thrusterImg;
 
 
 	// Managers
@@ -31,9 +32,18 @@ public class UI_Manager : MonoBehaviour
 	private void GameOver()
 	{
 		_gameManager.SetGameOver();
-		_gameOver.gameObject.SetActive(true);
+		_gameOver.gameObject.SetActive(true);    
 		_restartText.gameObject.SetActive(true);
 		StartCoroutine(GameOverFlicker());
+	}
+
+	public void UpdateThruster(float thruster)
+	{
+		if(_thrusterImg != null)
+		{
+			_thrusterImg.fillAmount = thruster;
+		}
+		
 	}
 
 	public void UpdateAmmo(int score)
