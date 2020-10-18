@@ -5,4 +5,4 @@
 Using Unity 2020.1.7f1
 
 - Development branch is tutorail led develpmen.
-- Phase I branch , is Phase I of 2D space shooter.
+- Phase I: k branch , is Phase I: Framework of 2D space shooter.
