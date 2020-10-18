@@ -48,7 +48,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private GameObject[] _playerDamage;
 
 	[SerializeField] private int _score = 0;
-
+	// Managers & system elements
+	[SerializeField] private CameraShake _camerashake;
 	[SerializeField] private UI_Manager _uiManager;
 
 	private bool _applyingThrusters = true;
@@ -110,6 +111,8 @@ public class PlayerController : MonoBehaviour
 				_audioSource.clip = _explosionAudioFX;
 			}
 		}
+
+		//CameraShake = _camera.GetComponent<CameraShake>();
 	}
 
 	void Update()
@@ -357,9 +360,11 @@ public class PlayerController : MonoBehaviour
 
 	public void Damage()
 	{
+		_camerashake.Shake();
 		// If shield is active no player damage, shield is destroyed.
 		if (_isShieldActive)
 		{
+			
 			ShieldDamage();
 			// No player Damage 
 			return;
@@ -370,6 +375,7 @@ public class PlayerController : MonoBehaviour
 		// Check if dead first
 		if (_lives < 1)
 		{
+			
 			DestroyPlayer();
 		}
 
