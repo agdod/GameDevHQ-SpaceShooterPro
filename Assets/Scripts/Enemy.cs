@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+	//Define ennum for differnt type of enemy movement current and future options
+	public enum EnemyMovmentID
+	{
+		Straight, // 0
+		Angled, // 1
+		//NOTE: Add addition movement types before count.
+		Count // 2 == Count of the type of enemy movement 
+	};
+
 	[SerializeField] private float _upperBound = 8.0f;
 	[SerializeField] private float _lowerBound = -3.5f;
 	[SerializeField] private float _enemySpeed = 4.0f;
@@ -14,6 +23,8 @@ public class Enemy : MonoBehaviour
 	[SerializeField] private float _fireRatemin = 3.0f;
 	[SerializeField] private AudioClip _explosionAudioFx; // explosion audio clip
 
+	[SerializeField] private EnemyMovmentID _enemyMovmentID;
+	private bool _respawnable;
 	private bool _enemyAlive = true;
 	private bool _canFire;
 	private AudioSource _audioSource;
@@ -52,6 +63,11 @@ public class Enemy : MonoBehaviour
 				_audioSource.clip = _explosionAudioFx;
 			}
 		}
+		// Generate a random movement type from the movement enuum for each enemy.
+
+		int count = (int)EnemyMovmentID.Count; // Cast the Count as int value
+		_enemyMovmentID = (EnemyMovmentID) Random.Range(0, count); //Random.Range cast as enemyMovement
+
 		// inital Random spawn position
 		RespawnEnemy();
 		StartCoroutine(EnemyFireRoutine());
@@ -100,14 +116,29 @@ public class Enemy : MonoBehaviour
 
 	void MoveEnemy()
 	{
-		//  move down at 4 m/s
+		//  move enemy at 4 m/s
+		// either down or angled across the screen
 		//  if bottom of screen respawn at top with new random postion
-		transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
-		if (transform.position.y < _lowerBound)
+
+		switch(_enemyMovmentID)
+		{
+			case EnemyMovmentID.Straight:
+				transform.Translate(Vector3.down  * _enemySpeed * Time.deltaTime);
+				_respawnable = true;
+				break;
+			case EnemyMovmentID.Angled:
+				transform.Translate((Vector3.down + Vector3.right) * _enemySpeed * Time.deltaTime);
+				_respawnable = true;
+				break;
+		}		
+
+		if (transform.position.y < _lowerBound && _respawnable == true)
 		{
 			RespawnEnemy();
 		}
 	}
+
+	
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
