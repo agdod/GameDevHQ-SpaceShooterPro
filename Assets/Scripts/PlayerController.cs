@@ -26,9 +26,10 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private GameObject _tripleShotPrefab;
 	[SerializeField] private float _fireRate;
 	[SerializeField] private int _ammoCount = 15;
+	[SerializeField] private int _maxAmmo = 15;
 	[SerializeField] private int _ammoRefill = 15;
 	private bool _homingLaser = false;
-
+	private int _hardMaxAmmo = 99;
 	private float _canFire = -1f;
 	private float _thrust = 100f;
 
@@ -82,6 +83,7 @@ public class PlayerController : MonoBehaviour
 		if (_uiManager != null)
 		{
 			_uiManager.UpdateAmmo(_ammoCount);
+			_uiManager.UpdateMaxAmmo(_maxAmmo);
 			_uiManager.UpdateLives(_lives);
 			_uiManager.UpdateScore(_score);
 		}
@@ -123,7 +125,7 @@ public class PlayerController : MonoBehaviour
 		{
 			FireLaser();
 		}
-		// THrusters - move at increased rate wiht "left shift" key
+		// Thrusters - move at increased rate wiht "left shift" key
 		// use the already _speedmodifier variable
 		if (Input.GetKeyDown(KeyCode.LeftShift)  && _canFireThruster)
 		{
@@ -449,9 +451,32 @@ public class PlayerController : MonoBehaviour
 
 	public void ActivateAmmoRefill()
 	{
-		_ammoCount += _ammoRefill;
-		_uiManager.UpdateAmmo(_ammoCount);
+		// Ammo refill powerup will refill ammo OR increase maxAmmo amount
+		// If ammo is at current max level then ammo AND maxAmmo is increased by refill amount.
+		// Ammo is capped at current maxAmmo.
+
+		if (_ammoCount == _maxAmmo && _maxAmmo < _hardMaxAmmo)
+		{
+			_maxAmmo += _ammoRefill;
+			if (_maxAmmo > _hardMaxAmmo)
+			{
+				_maxAmmo = _hardMaxAmmo;
+			}
+			_ammoCount = _maxAmmo;
+			_uiManager.UpdateMaxAmmo(_maxAmmo);
+			_uiManager.UpdateAmmo(_ammoCount);
+		}
+		else
+		{
+			_ammoCount += _ammoRefill;
+			if (_ammoCount > _maxAmmo)
+			{
+				_ammoCount = _maxAmmo;
+			}
+			_uiManager.UpdateAmmo(_ammoCount);
+		}
 	}
+		
 
 	public void ActivateSpeedBoost()
 	{

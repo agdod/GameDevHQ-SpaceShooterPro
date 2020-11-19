@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UI_Manager : MonoBehaviour
 {
-	[SerializeField] private TMPro.TMP_Text _scoreText;
-	[SerializeField] private TMPro.TMP_Text _ammoCount;
+	[SerializeField] private TMP_Text _scoreText;
+	[SerializeField] private TMP_Text _ammoCount;
+	[SerializeField] private TMP_Text _maxAmmo;
 	[SerializeField] private Image _livesPlaceHolder;
-	[SerializeField] private TMPro.TMP_Text _gameOver;
-	[SerializeField] private TMPro.TMP_Text _restartText;
+	[SerializeField] private TMP_Text _gameOver;
+	[SerializeField] private TMP_Text _restartText;
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
 	[SerializeField] private Image _thrusterImg;
@@ -48,7 +50,12 @@ public class UI_Manager : MonoBehaviour
 
 	public void UpdateAmmo(int score)
 	{
-		_ammoCount.text = score.ToString(); ;
+		_ammoCount.text = score.ToString(); 
+	}
+
+	public void UpdateMaxAmmo(int maxAmmo)
+	{
+		_maxAmmo.text = maxAmmo.ToString();
 	}
 
 	public void OutOfAmmo()
