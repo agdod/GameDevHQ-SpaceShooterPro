@@ -2819,6 +2819,8 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 8050167408957858346, guid: b0d12a81e50b0ee4c8ad0a6c64000125, type: 3}
   _delay: 5
   _spawnOffset: {x: 0, y: 6, z: 0}
+  numberOfWaves: 5
+  enemiesPerWave: 2
   _powerupPrefab:
   - _prefab: {fileID: 2893312637618270588, guid: 6efc7199e46e7464a83626c039503b43, type: 3}
     _probability: 0

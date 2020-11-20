@@ -11,13 +11,12 @@ public class UI_Manager : MonoBehaviour
 	[SerializeField] private TMP_Text _ammoCount;
 	[SerializeField] private TMP_Text _maxAmmo;
 	[SerializeField] private Image _livesPlaceHolder;
-	[SerializeField] private TMP_Text _gameOver;
+	[SerializeField] private TMP_Text _inGameText;
 	[SerializeField] private TMP_Text _restartText;
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
 	[SerializeField] private Image _thrusterImg;
-
-
+	
 	// Managers
 	[SerializeField] private GameManager _gameManager;
 
@@ -27,16 +26,26 @@ public class UI_Manager : MonoBehaviour
 	private void Start()
 	{
 		// Init start values
-		_gameOver.gameObject.SetActive(false);
+		_inGameText.gameObject.SetActive(false);
 		_restartText.gameObject.SetActive(false);
 	}
 
 	private void GameOver()
 	{
 		_gameManager.SetGameOver();
-		_gameOver.gameObject.SetActive(true);    
+		_inGameText.text = " Game Over ";
+		_inGameText.fontSize = 50;
+		_inGameText.gameObject.SetActive(true);    
 		_restartText.gameObject.SetActive(true);
 		StartCoroutine(GameOverFlicker());
+	}
+
+	public void UpdateWave(int waveCount)
+	{
+		_inGameText.text = " Wave " + waveCount + " Commencing...";
+		_inGameText.fontSize = 18;
+		_inGameText.gameObject.SetActive(true);
+		StartCoroutine(NextWave(2.0f));
 	}
 
 	public void UpdateThruster(float thruster)
@@ -44,8 +53,7 @@ public class UI_Manager : MonoBehaviour
 		if(_thrusterImg != null)
 		{
 			_thrusterImg.fillAmount = thruster;
-		}
-		
+		}	
 	}
 
 	public void UpdateAmmo(int score)
@@ -77,6 +85,12 @@ public class UI_Manager : MonoBehaviour
 		}
 	}
 
+	IEnumerator NextWave(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		_inGameText.gameObject.SetActive(false);
+	}
+
 	IEnumerator Ammoflicker()
 	{
 		while (_ammoCount.text == "0")
@@ -92,7 +106,7 @@ public class UI_Manager : MonoBehaviour
 		while (true)
 		{
 			_gameOverStatus = !_gameOverStatus;
-			_gameOver.gameObject.SetActive(_gameOverStatus);
+			_inGameText.gameObject.SetActive(_gameOverStatus);
 			yield return new WaitForSeconds(_flickerDelay);
 		}
 	}
