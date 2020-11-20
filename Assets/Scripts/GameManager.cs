@@ -6,12 +6,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[SerializeField] private bool _isGameOver;
-
+	
 	void Start()
 	{
 		_isGameOver = false;
 	}
-
 
 	void Update()
 	{

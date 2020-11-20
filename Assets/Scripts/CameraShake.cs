@@ -14,7 +14,6 @@ public class CameraShake : MonoBehaviour
 
 	public IEnumerator ShakeIt()
 	{
-		Debug.Log("Entering camerashake routine");
 		Vector3 initialPosition = transform.position;
 		float posZ = transform.position.z;
 		float timePassed = 0f;

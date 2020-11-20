@@ -63,13 +63,11 @@ public class Laser : MonoBehaviour
 		// Check that _target hasnt already been destroyed
 		if (_target != null)
 		{
-			// move closer towards the target
-			//Calcuate distance to move
+			// Calcuate distance to move
 			// Rotate laser to _target
 			Vector3 relativeTarget = (_target.position - transform.position).normalized;
 			Quaternion toQuaternion = Quaternion.FromToRotation(Vector3.up, _target.position);
 			transform.rotation = Quaternion.Slerp(transform.rotation, toQuaternion, _speed * Time.deltaTime);
-			//transform.LookAt(Vector3.forward, Vector3.Cross(Vector3.up, _target.position));
 			float step = _speed * Time.deltaTime;
 
 			transform.position = Vector3.MoveTowards(transform.position, _target.position, step);

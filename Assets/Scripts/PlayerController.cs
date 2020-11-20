@@ -252,7 +252,6 @@ public class PlayerController : MonoBehaviour
 	{
 		// Get first enemy in Spawn manager container as target.
 		GameObject container = _spawnManager.EnemyContainer;
-		Debug.Log("Container has a child cont of :" + container.transform.childCount);
 		if (container.transform.childCount > 0)
 		{
 			Transform enemyTarget = container.transform.GetChild(0);
@@ -266,7 +265,6 @@ public class PlayerController : MonoBehaviour
 
 	void FireHoming()
 	{
-		Debug.Log("homing laser fired");
 		// Collect laser Game'Object fired.
 		GameObject laserFire = Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
 		Laser laser = laserFire.GetComponent<Laser>();
@@ -297,15 +295,6 @@ public class PlayerController : MonoBehaviour
 				FireHoming();
 				break;
 		}
-		//if (_isTripleShotActive)
-		//{
-		//	
-		//}
-		//else
-		//{
-
-
-		//}
 	}
 
 	//Receive damage from enemy laser
@@ -500,7 +489,6 @@ public class PlayerController : MonoBehaviour
 		Color shieldColor = new Color(255, 255, 255);
 		_shieldSpriteRenderer.color = shieldColor;
 		// Maybe enable cooldown... but with longer timeout....
-		// StartCoroutine(CoolDown("Shield"));
 	}
 
 	IEnumerator CoolDown(string powerUp)
