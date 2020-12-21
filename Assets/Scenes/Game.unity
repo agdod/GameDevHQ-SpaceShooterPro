@@ -2819,6 +2819,7 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 8050167408957858346, guid: b0d12a81e50b0ee4c8ad0a6c64000125, type: 3}
   _delay: 5
   _spawnOffset: {x: 0, y: 6, z: 0}
+  uiManager: {fileID: 2093757699}
   numberOfWaves: 5
   enemiesPerWave: 2
   _powerupPrefab:
@@ -3048,7 +3049,7 @@ MonoBehaviour:
   _ammoCount: {fileID: 848221117}
   _maxAmmo: {fileID: 314307116}
   _livesPlaceHolder: {fileID: 777948788}
-  _gameOver: {fileID: 1093106963}
+  _inGameText: {fileID: 1093106963}
   _restartText: {fileID: 1563906222}
   _livesSprite:
   - {fileID: 21300000, guid: ba53e111f0125654cabfd4eefaf3a657, type: 3}
