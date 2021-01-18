@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
 	private int _hardMaxAmmo = 99;
 	private float _canFire = -1f;
 	private float _thrust = 100f;
+	private float _previousFireRate;
 
 	//Power Ups
 	[SerializeField] private GameObject _shieldEffect;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
 	private AudioSource _audioSource;
 	private SpawnManager _spawnManager;
 	private SpriteRenderer _shieldSpriteRenderer;
+	private bool _isNegative = false;
 
 
 	void Start()
@@ -127,7 +129,7 @@ public class PlayerController : MonoBehaviour
 		}
 		// Thrusters - move at increased rate wiht "left shift" key
 		// use the already _speedmodifier variable
-		if (Input.GetKeyDown(KeyCode.LeftShift)  && _canFireThruster)
+		if (Input.GetKeyDown(KeyCode.LeftShift) && _canFireThruster)
 		{
 			_applyingThrusters = true;
 			_speed = _speed * (_speedModifier * 0.8f);
@@ -283,6 +285,10 @@ public class PlayerController : MonoBehaviour
 	void FireLaser()
 	{
 		_canFire = Time.time + _fireRate;
+		if (_isNegative)
+		{
+			_firingType = FiringType.Normal;
+		}
 		switch (_firingType)
 		{
 			case FiringType.Normal:
@@ -355,7 +361,7 @@ public class PlayerController : MonoBehaviour
 		// If shield is active no player damage, shield is destroyed.
 		if (_isShieldActive)
 		{
-			
+
 			ShieldDamage();
 			// No player Damage 
 			return;
@@ -366,7 +372,7 @@ public class PlayerController : MonoBehaviour
 		// Check if dead first
 		if (_lives < 1)
 		{
-			
+
 			DestroyPlayer();
 		}
 
@@ -465,7 +471,7 @@ public class PlayerController : MonoBehaviour
 			_uiManager.UpdateAmmo(_ammoCount);
 		}
 	}
-		
+
 
 	public void ActivateSpeedBoost()
 	{
@@ -491,6 +497,22 @@ public class PlayerController : MonoBehaviour
 		// Maybe enable cooldown... but with longer timeout....
 	}
 
+	public void ActivateNegativePowerup()
+	{
+		// Negative PowerUp - slows down fire rate and prevents Fire type Powerup
+		// Store current fire rate
+		// Set new slower fire rate
+		// Apply visualeffect to ammo HUD
+		// Start coolDown for negative effect 
+
+		_previousFireRate = _fireRate;
+		_fireRate = 1.0f;
+		_firingType = FiringType.Normal;
+		_isNegative = true;
+		_uiManager.AmmoFreeze();
+		StartCoroutine(CoolDown("Negative"));
+	}
+
 	IEnumerator CoolDown(string powerUp)
 	{
 		yield return new WaitForSeconds(_coolDown);
@@ -505,6 +527,11 @@ public class PlayerController : MonoBehaviour
 				break;
 			case "Homing":
 				_firingType = FiringType.Normal;
+				break;
+			case "Negative":
+				_isNegative = false;
+				_fireRate = _previousFireRate;
+				_uiManager.AmmoUnfreeze();
 				break;
 			default:
 				Debug.Log("unidentified PowerUp!");

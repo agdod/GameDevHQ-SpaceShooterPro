@@ -11,7 +11,8 @@ public class PowerUp : MonoBehaviour
 		Shield,
 		Ammo,
 		Health,
-		Homing
+		Homing,
+		Negative
 	};
 
 	[SerializeField] private PowerupID powerupId;
@@ -74,6 +75,10 @@ public class PowerUp : MonoBehaviour
 					case PowerupID.Homing:
 						PowerUpAudio();
 						player.ActivateHomingLaser();
+						break;
+					case PowerupID.Negative:
+						PowerUpAudio();
+						player.ActivateNegativePowerup();
 						break;
 				}
 			}

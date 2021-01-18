@@ -16,7 +16,7 @@ public class UI_Manager : MonoBehaviour
 	[SerializeField] private Sprite[] _livesSprite;
 	[SerializeField] private float _flickerDelay = 0.5f;
 	[SerializeField] private Image _thrusterImg;
-	
+
 	// Managers
 	[SerializeField] private GameManager _gameManager;
 
@@ -35,7 +35,7 @@ public class UI_Manager : MonoBehaviour
 		_gameManager.SetGameOver();
 		_inGameText.text = " Game Over ";
 		_inGameText.fontSize = 50;
-		_inGameText.gameObject.SetActive(true);    
+		_inGameText.gameObject.SetActive(true);
 		_restartText.gameObject.SetActive(true);
 		StartCoroutine(GameOverFlicker());
 	}
@@ -50,15 +50,15 @@ public class UI_Manager : MonoBehaviour
 
 	public void UpdateThruster(float thruster)
 	{
-		if(_thrusterImg != null)
+		if (_thrusterImg != null)
 		{
 			_thrusterImg.fillAmount = thruster;
-		}	
+		}
 	}
 
 	public void UpdateAmmo(int score)
 	{
-		_ammoCount.text = score.ToString(); 
+		_ammoCount.text = score.ToString();
 	}
 
 	public void UpdateMaxAmmo(int maxAmmo)
@@ -84,6 +84,19 @@ public class UI_Manager : MonoBehaviour
 			GameOver();
 		}
 	}
+
+	public void AmmoFreeze()
+	{
+		_ammoCount.color = Color.blue;
+		_maxAmmo.color = Color.blue;
+	}
+
+	public void AmmoUnfreeze()
+	{
+		_ammoCount.color = Color.red;
+		_maxAmmo.color = Color.white;
+	}
+
 
 	IEnumerator NextWave(float delay)
 	{
