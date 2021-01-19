@@ -58,11 +58,13 @@ public class UI_Manager : MonoBehaviour
 
 	public void UpdateAmmo(int score)
 	{
+		_ammoCount.color = Color.red;
 		_ammoCount.text = score.ToString();
 	}
 
 	public void UpdateMaxAmmo(int maxAmmo)
 	{
+		_maxAmmo.color = Color.white;
 		_maxAmmo.text = maxAmmo.ToString();
 	}
 
