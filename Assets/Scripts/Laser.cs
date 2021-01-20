@@ -14,6 +14,9 @@ public class Laser : MonoBehaviour
 
 	private Transform _target;
 	private AudioSource _audioSource;
+	private LaserBeamController _laserBeamController;
+
+	private bool _isLaserBeam;
 
 	// Getter return bool of _enemyFired to outside class
 	public bool EnemyFired
@@ -95,7 +98,31 @@ public class Laser : MonoBehaviour
 	{
 		if (other.tag == "Player" && _enemyFired == true)
 		{
-			other.GetComponent<PlayerController>().DoubleHitCheck();
+			// check that not part of laser beam
+			// if part of laserbeam has this beam, already hit?
+			if (_isLaserBeam)
+			{
+				// Check with laserbeam controller if damage has been done
+				if (_laserBeamController.HasHit)
+				{
+					// Destroy laser without inflicting damage.
+					DestroyLaser();
+					return;
+				}
+				else
+				{
+					Debug.Log("now its hit  - this should be first hit");
+					// Register laserbeam has hit and inflict damage.
+					_laserBeamController.LaserBeamHit();
+					other.GetComponent<PlayerController>().Damage();
+					DestroyLaser();
+				}
+			}
+			else
+			{
+				other.GetComponent<PlayerController>().DoubleHitCheck();
+				DestroyLaser();
+			}
 		}
 	}
 
@@ -107,17 +134,7 @@ public class Laser : MonoBehaviour
 		// Destroy laser when out of bounds
 		if (transform.position.y > _upperBound)
 		{
-			// Check if has parent (i.e is part of triple shot)
-			if (transform.parent != null)
-			{
-				// Get the parent gameObject
-				Transform parentObject = transform.parent;
-				Destroy(parentObject.gameObject);
-			}
-			else
-			{
-				Destroy(gameObject);
-			}
+			DestroyLaser();
 		}
 	}
 
@@ -129,8 +146,27 @@ public class Laser : MonoBehaviour
 		// Destroy laser when out of bounds (bottom of screen)
 		if (transform.position.y < _lowerBound)
 		{
+			DestroyLaser();
+		}
+	}
+
+	void DestroyLaser()
+	{
+		// Check if has parent (i.e is part of triple shot, or enemy fired)
+		if (transform.parent != null)
+		{
+			// Get the parent gameObject
 			Transform parentObject = transform.parent;
 			Destroy(parentObject.gameObject);
+		}
+		else
+		{
+			// Check is part of laser beam and remove from controller list.
+			if (_isLaserBeam)
+			{
+				_laserBeamController.RemoveFromList();
+			}
+			Destroy(gameObject);
 		}
 	}
 
@@ -148,5 +184,11 @@ public class Laser : MonoBehaviour
 	public void LaserSoundFx()
 	{
 		_audioSource.Play();
+	}
+
+	public void SetToLaserBeam(LaserBeamController controller)
+	{
+		_isLaserBeam = true;
+		_laserBeamController = controller;
 	}
 }
